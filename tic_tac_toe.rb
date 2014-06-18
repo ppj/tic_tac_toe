@@ -14,7 +14,6 @@ class TicTacToe
     while p2_symbol == p1_symbol
       p2_symbol = prompt("What symbol would you like to play with #{p2_name} ('#{p1_symbol}' is taken)", "O").upcase[0]
     end
-
     p2 = Player.new(p2_name, p2_symbol)
 
     @board = Board.new(p1, p2)
@@ -24,28 +23,26 @@ class TicTacToe
 
   def run
 
-    until @board.full?
+    while true
       puts @board
       puts @board.display_helper
       while true
-        cell = prompt("Enter a number denoting an available cell", "")[0].to_i
-        cell = cell > 0 ? cell - 1 : "invalid"
+        cell_index = prompt("Enter a number denoting an available cell", "")[0].to_i
+        cell_index = cell_index > 0 ? cell_index - 1 : "invalid"
         # binding.pry
-        if @board.valid?(cell)
+        if @board.valid?(cell_index)
           break
         end
       end
 
-      if @board.mark_cell_and_check_winner(cell)
+      if @board.mark_cell_and_check_winner(cell_index)
+        break
+      elsif @board.full?
+        puts @board
+        puts "\nGame tied.\n\n"
         break
       end
     end
-
-    if @board.full?
-      puts @board
-      puts "\nGame tied.\n\n"
-    end
-
   end
 
 

@@ -34,17 +34,17 @@ class Board
   end
 
 
-  def valid?(cell)
-    cell.class == Fixnum ? self.state[cell].empty? : false
+  def valid?(cell_index)
+    cell_index.class == Fixnum ? self.state[cell_index].empty? : false
   end
 
 
-  def mark_cell_and_check_winner(cell)
-    if self.valid?(cell)
-      self.state[cell].symbol = @current_player.symbol
-      winner = check_winner
+  def mark_cell_and_check_winner(cell_index)
+    if self.valid?(cell_index)
+      # self.state[cell_index].symbol = @current_player.symbol
+      @current_player.mark_cell(self, cell_index)
       @current_player = @current_player == player1 ? player2 : player1
-      return winner
+      return check_winner
     end
     puts "Please select an empty square on the board"
     return false
@@ -52,9 +52,9 @@ class Board
 
 
   def empty_cells
-    cells = []
-    self.state.each_with_index {|e, idx| cells << idx if e.empty? }
-    cells
+    empty_cells = []
+    self.state.each_with_index {|e, idx| empty_cells << idx if e.empty? }
+    empty_cells
   end
 
 
@@ -111,7 +111,7 @@ class Board
     "\n---+---+---" +
     "\n #{arr[3]} | #{arr[4]} | #{arr[5]} " +
     "\n---+---+---" +
-    "\n #{arr[6]} | #{arr[7]} | #{arr[8]} \n"
+    "\n #{arr[6]} | #{arr[7]} | #{arr[8]} \n\n"
   end
 
 end
