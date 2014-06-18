@@ -27,8 +27,7 @@ class Board
       idx += 1
       cell.symbol == ' ' ? "#{idx}" : cell.symbol
     end
-    "\nEmpty cells are marked with numbers above.\n" +
-    "Pick a cell using the corresponding number\n" + draw_board(helper)
+    "Reference board:\n" + draw_board(helper)
   end
 
 

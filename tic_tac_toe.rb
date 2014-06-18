@@ -31,7 +31,7 @@ class TicTacToe
       puts @board
       # binding.pry
       unless @current_player.name.include?('Computer-')
-        puts "#{@current_player} to play..." + @board.display_helper
+        puts @board.display_helper + "#{@current_player} to play..."
         while true
           default = @board.empty_cells.length == 1 ? "#{@board.empty_cells[0]+1}" : ""
           cell_index = prompt("Enter a number denoting an available cell", default)[0].to_i
