@@ -7,10 +7,14 @@ class TicTacToe
   def initialize
     p1_name   = prompt("Player 1: Your name? (Enter '#' for computer)", "Sidd")
     p1_symbol = prompt("What symbol would you like to play with #{p1_name}", "X").upcase[0]
-    p2_name   = prompt("Player 2: Your name? (Enter '#' for computer)", "Nish")
-    p2_symbol = prompt("What symbol would you like to play with #{p2_name}", "O").upcase[0]
-
     p1 = Player.new(p1_name, p1_symbol)
+
+    p2_name   = prompt("Player 2: Your name? (Enter '#' for computer)", "Nish")
+    p2_symbol = p1_symbol
+    while p2_symbol == p1_symbol
+      p2_symbol = prompt("What symbol would you like to play with #{p2_name} ('#{p1_symbol}' is taken)", "O").upcase[0]
+    end
+
     p2 = Player.new(p2_name, p2_symbol)
 
     @board = Board.new(p1, p2)
