@@ -17,16 +17,16 @@ class Board
 
   def to_s
     system "cls"
-    helper = self.state.map {|pos| pos.symbol}
+    helper = self.state.map {|cell| cell.symbol}
     "#{player1} | #{player2}\n" + draw_board(helper)
   end
 
 
   def display_helper
     idx = 0
-    helper = self.state.map do |pos|
+    helper = self.state.map do |cell|
       idx += 1
-      pos.symbol == ' ' ? "#{idx}" : pos.symbol
+      cell.symbol == ' ' ? "#{idx}" : cell.symbol
     end
     "\n#{@current_player}'s Turn\n" +
     "\nEmpty cells are marked with numbers above.\n" +
@@ -41,7 +41,6 @@ class Board
 
   def mark_cell_and_check_winner(cell_index)
     if self.valid?(cell_index)
-      # self.state[cell_index].symbol = @current_player.symbol
       @current_player.mark_cell(self, cell_index)
       @current_player = @current_player == player1 ? player2 : player1
       return check_winner

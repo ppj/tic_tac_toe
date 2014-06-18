@@ -38,7 +38,9 @@ class TicTacToe
 
       if @board.mark_cell_and_check_winner(cell_index)
         break
-      elsif @board.full?
+      end
+
+      if @board.full?
         puts @board
         puts "\nGame tied.\n\n"
         break
