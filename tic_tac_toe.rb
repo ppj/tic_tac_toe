@@ -5,11 +5,13 @@ class TicTacToe
   # attr_accessor
 
   def initialize
-    p1_name   = prompt("Player 1: Your name? (Enter '#' for computer)", "Sidd")
+    p1_name   = prompt("Player 1: Your name? (Enter '#' for computer)", "Nish")
+    p1_name   = "Computer-1" if p1_name == '#'
     p1_symbol = prompt("What symbol would you like to play with #{p1_name}", "X").upcase[0]
     @player1 = Player.new(p1_name, p1_symbol)
 
-    p2_name   = prompt("Player 2: Your name? (Enter '#' for computer)", "Nish")
+    p2_name   = prompt("Player 2: Your name? (Enter '#' for computer)", "Sidd")
+    p2_name   = "Computer-2" if p2_name == '#'
     p2_symbol = p1_symbol
     while p2_symbol == p1_symbol
       p2_symbol = prompt("What symbol would you like to play with #{p2_name} ('#{p1_symbol}' is taken)", "O").upcase[0]
@@ -27,15 +29,19 @@ class TicTacToe
 
     while true
       puts @board
-      puts "#{@current_player} to play..." + @board.display_helper
-      while true
-        default = @board.empty_cells.length == 1 ? "#{@board.empty_cells[0]+1}" : ""
-        cell_index = prompt("Enter a number denoting an available cell", default)[0].to_i
-        cell_index = cell_index > 0 ? cell_index - 1 : "invalid"
-        # binding.pry
-        if @board.valid?(cell_index)
-          break
+      # binding.pry
+      unless @current_player.name.include?('Computer-')
+        puts "#{@current_player} to play..." + @board.display_helper
+        while true
+          default = @board.empty_cells.length == 1 ? "#{@board.empty_cells[0]+1}" : ""
+          cell_index = prompt("Enter a number denoting an available cell", default)[0].to_i
+          cell_index = cell_index > 0 ? cell_index - 1 : "invalid"
+          if @board.valid?(cell_index)
+            break
+          end
         end
+      else
+        cell_index = @board.empty_cells.sample
       end
 
       if @board.mark_cell_and_check_winner(@current_player, cell_index)
