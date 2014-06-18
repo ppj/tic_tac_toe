@@ -21,21 +21,25 @@ class TicTacToe
   def run
 
     until @board.full?
-      # binding.pry
       puts @board
       puts @board.display_helper
       while true
-        position = gets.chomp().to_i - 1
-        if @board.empty_positions.include?(position)
+        cell = prompt("Enter a number denoting an available cell", "")[0].to_i
+        cell = cell > 0 ? cell - 1 : "invalid"
+        # binding.pry
+        if @board.valid?(cell)
           break
-        else
-          puts "Please enter a valid position number (refer the board displayed above)"
         end
       end
 
-      if @board.mark_position_and_check_winner(position)
+      if @board.mark_cell_and_check_winner(cell)
         break
       end
+    end
+
+    if @board.full?
+      puts @board
+      puts "\nGame tied.\n\n"
     end
 
   end
@@ -44,7 +48,12 @@ class TicTacToe
   private
 
   def prompt(string, default)
-    print "#{string} (Default: '#{default}') >> "
+    if default.empty?
+      prompt_string = "#{string} >> "
+    else
+      prompt_string = "#{string} (Default: '#{default}') >> "
+    end
+    print prompt_string
     response = gets.chomp
     if response.empty?
       response = default

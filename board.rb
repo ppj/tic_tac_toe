@@ -1,4 +1,4 @@
-require './square'
+require './cell'
 require './player'
 
 class Board
@@ -8,7 +8,7 @@ class Board
 
   def initialize(p1, p2)
     @state = []
-    9.times {@state << Square.new}
+    9.times {@state << Cell.new}
     @player1 = p1
     @player2 = p2
     @current_player = player1
@@ -29,14 +29,19 @@ class Board
       pos.symbol == ' ' ? "#{idx}" : pos.symbol
     end
     "\n#{@current_player}'s Turn\n" +
-    "\nEmpty positions are marked with numbers above.\n" +
-    "Pick a position using the corresponding number\n" + draw_board(helper)
+    "\nEmpty cells are marked with numbers above.\n" +
+    "Pick a cell using the corresponding number\n" + draw_board(helper)
   end
 
 
-  def mark_position_and_check_winner(position)
-    if self.state[position].empty?
-      self.state[position].symbol = @current_player.symbol
+  def valid?(cell)
+    cell.class == Fixnum ? self.state[cell].empty? : false
+  end
+
+
+  def mark_cell_and_check_winner(cell)
+    if self.valid?(cell)
+      self.state[cell].symbol = @current_player.symbol
       winner = check_winner
       @current_player = @current_player == player1 ? player2 : player1
       return winner
@@ -46,15 +51,15 @@ class Board
   end
 
 
-  def empty_positions
-    positions = []
-    self.state.each_with_index {|e, idx| positions << idx if e.empty? }
-    positions
+  def empty_cells
+    cells = []
+    self.state.each_with_index {|e, idx| cells << idx if e.empty? }
+    cells
   end
 
 
   def full?
-    self.empty_positions.empty?
+    self.empty_cells.empty?
   end
 
 
@@ -73,7 +78,7 @@ class Board
       [3, 5, 7]
     ]
 
-    if self.empty_positions.length > 4
+    if self.empty_cells.length > 4
       return false
     end
 

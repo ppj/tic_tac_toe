@@ -6,8 +6,8 @@ class Player
     @name   = n
   end
 
-  def mark_square(board, position)
-    board[position].symbol = @symbol
+  def mark_cell(board, cell)
+    board[cell].symbol = @symbol
   end
 
   def to_s
