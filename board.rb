@@ -11,7 +11,6 @@ class Board
     9.times {@state << Cell.new}
     @player1 = p1
     @player2 = p2
-    @current_player = player1
   end
 
 
@@ -28,7 +27,6 @@ class Board
       idx += 1
       cell.symbol == ' ' ? "#{idx}" : cell.symbol
     end
-    "\n#{@current_player}'s Turn\n" +
     "\nEmpty cells are marked with numbers above.\n" +
     "Pick a cell using the corresponding number\n" + draw_board(helper)
   end
@@ -39,10 +37,9 @@ class Board
   end
 
 
-  def mark_cell_and_check_winner(cell_index)
+  def mark_cell_and_check_winner(player, cell_index)
     if self.valid?(cell_index)
-      @current_player.mark_cell(self, cell_index)
-      @current_player = @current_player == player1 ? player2 : player1
+      player.mark_cell(self, cell_index)
       return check_winner
     end
     puts "Please select an empty square on the board"

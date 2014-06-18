@@ -7,16 +7,18 @@ class TicTacToe
   def initialize
     p1_name   = prompt("Player 1: Your name? (Enter '#' for computer)", "Sidd")
     p1_symbol = prompt("What symbol would you like to play with #{p1_name}", "X").upcase[0]
-    p1 = Player.new(p1_name, p1_symbol)
+    @player1 = Player.new(p1_name, p1_symbol)
 
     p2_name   = prompt("Player 2: Your name? (Enter '#' for computer)", "Nish")
     p2_symbol = p1_symbol
     while p2_symbol == p1_symbol
       p2_symbol = prompt("What symbol would you like to play with #{p2_name} ('#{p1_symbol}' is taken)", "O").upcase[0]
     end
-    p2 = Player.new(p2_name, p2_symbol)
+    @player2 = Player.new(p2_name, p2_symbol)
 
-    @board = Board.new(p1, p2)
+    @board = Board.new(@player1, @player2)
+
+    @current_player = @player1
 
   end
 
@@ -25,7 +27,7 @@ class TicTacToe
 
     while true
       puts @board
-      puts @board.display_helper
+      puts "#{@current_player} to play..." + @board.display_helper
       while true
         default = @board.empty_cells.length == 1 ? "#{@board.empty_cells[0]+1}" : ""
         cell_index = prompt("Enter a number denoting an available cell", default)[0].to_i
@@ -36,7 +38,7 @@ class TicTacToe
         end
       end
 
-      if @board.mark_cell_and_check_winner(cell_index)
+      if @board.mark_cell_and_check_winner(@current_player, cell_index)
         break
       end
 
@@ -45,6 +47,9 @@ class TicTacToe
         puts "\nGame tied.\n\n"
         break
       end
+
+      @current_player = @current_player == @player1 ? @player2 : @player1
+
     end
   end
 
