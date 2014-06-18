@@ -27,7 +27,8 @@ class TicTacToe
       puts @board
       puts @board.display_helper
       while true
-        cell_index = prompt("Enter a number denoting an available cell", "")[0].to_i
+        default = @board.empty_cells.length == 1 ? "#{@board.empty_cells[0]+1}" : ""
+        cell_index = prompt("Enter a number denoting an available cell", default)[0].to_i
         cell_index = cell_index > 0 ? cell_index - 1 : "invalid"
         # binding.pry
         if @board.valid?(cell_index)
