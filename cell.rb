@@ -1,4 +1,4 @@
-class Square
+class Cell
   attr_accessor :symbol
 
   def initialize
