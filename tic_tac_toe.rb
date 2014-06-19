@@ -17,7 +17,7 @@ class TicTacToe
     end
     @player2 = Player.new(p2_name, p2_symbol)
 
-    @board = Board.new(@player1, @player2)
+    @board = Board.new()
 
     @current_player = @player1
 
@@ -26,13 +26,10 @@ class TicTacToe
 
   def play
 
-    begin
+    while true
       display_board
-
       cell_index = player_picks_cell
-
       winner = @board.mark_cell_and_check_winner(@current_player, cell_index)
-
       if winner
         display_board
         puts "#{winner.name} Won! Game Over!\n\n"
@@ -44,9 +41,7 @@ class TicTacToe
       else
         swap_player
       end
-
-
-    end while true
+    end
 
   end
 

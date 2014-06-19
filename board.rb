@@ -6,7 +6,7 @@ class Board
   attr_reader :cells
 
 
-  def initialize(p1, p2)
+  def initialize()
     @cells = []
     9.times {@cells << Cell.new}
   end
