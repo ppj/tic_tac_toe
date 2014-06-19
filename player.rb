@@ -7,7 +7,7 @@ class Player
   end
 
   def mark_cell(board, cell)
-    board.state[cell].symbol = self.symbol
+    board.cells[cell].symbol = self.symbol
   end
 
   def to_s

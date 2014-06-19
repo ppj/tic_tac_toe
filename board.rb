@@ -3,27 +3,25 @@ require './player'
 
 class Board
 
-  attr_reader :state, :player1, :player2
+  attr_reader :cells
 
 
   def initialize(p1, p2)
-    @state = []
-    9.times {@state << Cell.new}
-    @player1 = p1
-    @player2 = p2
+    @cells = []
+    9.times {@cells << Cell.new}
   end
 
 
   def to_s
     system "cls"
-    helper = self.state.map {|cell| cell.symbol}
-    "#{player1} | #{player2}\n" + draw_board(helper)
+    helper = self.cells.map {|cell| cell.symbol}
+    draw_board(helper)
   end
 
 
   def display_helper
     idx = 0
-    helper = self.state.map do |cell|
+    helper = self.cells.map do |cell|
       idx += 1
       cell.symbol == ' ' ? "#{idx}" : cell.symbol
     end
@@ -32,14 +30,14 @@ class Board
 
 
   def valid?(cell_index)
-    cell_index.class == Fixnum ? self.state[cell_index].empty? : false
+    cell_index.class == Fixnum ? self.cells[cell_index].empty? : false
   end
 
 
   def mark_cell_and_check_winner(player, cell_index)
     if self.valid?(cell_index)
       player.mark_cell(self, cell_index)
-      return check_winner
+      return check_winner(player)
     end
     puts "Please select an empty square on the board"
     return false
@@ -48,7 +46,7 @@ class Board
 
   def empty_cells
     empty_cells = []
-    self.state.each_with_index {|e, idx| empty_cells << idx if e.empty? }
+    self.cells.each_with_index {|e, idx| empty_cells << idx if e.empty? }
     empty_cells
   end
 
@@ -61,7 +59,7 @@ class Board
   private
 
 
-  def check_winner()
+  def check_winner(player)
     winning_patterns = [
       [1, 2, 3],
       [4, 5, 6],
@@ -78,20 +76,11 @@ class Board
     end
 
     winning_patterns.each do |pattern|
-      if player1.symbol == self.state[pattern[0]-1].symbol and
-         player1.symbol == self.state[pattern[1]-1].symbol and
-         player1.symbol == self.state[pattern[2]-1].symbol
+      if player.symbol == self.cells[pattern[0]-1].symbol and
+         player.symbol == self.cells[pattern[1]-1].symbol and
+         player.symbol == self.cells[pattern[2]-1].symbol
 
-        puts self
-        puts "\n#{player1.name} Won! Game Over!\n\n"
-        return player1
-      elsif player2.symbol == self.state[pattern[0]-1].symbol and
-            player2.symbol == self.state[pattern[1]-1].symbol and
-            player2.symbol == self.state[pattern[2]-1].symbol
-
-        puts self
-        puts "\n#{player2.name} Won! Game Over!\n\n"
-        return player2
+        return player
       end
     end
 
